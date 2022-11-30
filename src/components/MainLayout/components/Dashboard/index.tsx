@@ -1,28 +1,34 @@
-import { FC, PropsWithChildren, useState } from 'react';
-
-import ROUTES from 'constants/routes';
+import { FC, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  CssBaseline,
+  Divider,
+  IconButton,
+  List,
+  Box
+} from '@mui/material';
 
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useAppSelector } from 'store/hooks';
 
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import ROUTES from 'constants/routes';
 
 import { AppBar, Drawer, DrawerHeader } from './components';
 
-const Dashboard: FC<PropsWithChildren> = ({ children }) => {
+const Dashboard: FC = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const { user } = useAppSelector((state) => state.auth);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -32,57 +38,64 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
     setOpen(false);
   };
 
+  const handleNavClick = (path: string) => () => {
+    navigate(path);
+  };
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#E7EBF0', height: '100vh' }}>
       <CssBaseline />
       <AppBar open={open} onOpen={handleDrawerOpen} />
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
+            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {ROUTES.map((route) => (
-            <ListItem key={route.name} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <route.icon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={route.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {ROUTES.map(
+            ({
+              name,
+              path,
+              icon: Icon,
+              roles = ['admin', 'teacher', 'student']
+            }) =>
+              roles?.includes(user?.role ? user.role : '') && (
+                <ListItem key={name} disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5
+                    }}
+                    onClick={handleNavClick(path)}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Icon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={name}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )
+          )}
         </List>
       </Drawer>
-      ;
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <>
           <DrawerHeader />
-          {children}
+          <Outlet />
         </>
       </Box>
-      ;
     </Box>
   );
 };

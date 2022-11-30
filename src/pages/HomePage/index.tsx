@@ -1,7 +1,5 @@
 import { FC } from 'react';
 
-import MainLayout from 'components/MainLayout';
-
-const HomePage: FC = () => <MainLayout />;
+const HomePage: FC = () => <div>Home page</div>;
 
 export default HomePage;

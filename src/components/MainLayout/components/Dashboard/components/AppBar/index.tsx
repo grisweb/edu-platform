@@ -4,8 +4,8 @@ import { styled } from '@mui/material/styles';
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar/AppBar';
 import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import {
+  Avatar,
   Box,
   Tooltip,
   Toolbar,
@@ -15,24 +15,27 @@ import {
   MenuItem
 } from '@mui/material';
 
+import { useAppSelector } from 'store/hooks';
+import { useLogout } from 'hooks';
+
 interface StyledAppBarProps extends MuiAppBarProps {
   open: boolean;
 }
 
 const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open'
-})<StyledAppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen
+})<StyledAppBarProps>(({ theme: { transitions, zIndex, options }, open }) => ({
+  zIndex: zIndex.drawer + 1,
+  transition: transitions.create(['width', 'margin'], {
+    easing: transitions.easing.sharp,
+    duration: transitions.duration.leavingScreen
   }),
   ...(open && {
-    marginLeft: theme.options.drawerWidth,
-    width: `calc(100% - ${theme.options.drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
+    marginLeft: options.drawerWidth,
+    width: `calc(100% - ${options.drawerWidth}px)`,
+    transition: transitions.create(['width', 'margin'], {
+      easing: transitions.easing.sharp,
+      duration: transitions.duration.enteringScreen
     })
   })
 }));
@@ -41,8 +44,6 @@ interface AppBarProps {
   open: boolean;
   onOpen: () => void;
 }
-
-const settings = ['Profile', 'Logout'];
 
 const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
@@ -54,6 +55,15 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const logout = useLogout();
+
+  const settings = [
+    { title: 'Profile', onClick: handleCloseUserMenu },
+    { title: 'Logout', onClick: () => logout() }
+  ];
+
+  const { user } = useAppSelector((state) => state.auth);
 
   return (
     <StyledAppBar position="fixed" open={open}>
@@ -74,7 +84,16 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
           Edu Platform
         </Typography>
 
-        <Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography
+            sx={{ marginRight: '10px' }}
+            align="right"
+            variant="body2"
+          >
+            {user?.name}
+            <br />
+            {user?.email}
+          </Typography>
           <Tooltip title="Open settings">
             <IconButton
               onClick={handleOpenUserMenu}
@@ -85,7 +104,10 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
               aria-haspopup="true"
               // sx={{ p: 0 }}
             >
-              <AccountCircle />
+              <Avatar sx={{ backgroundColor: '#416660' }}>
+                {user?.name.split(' ')[0][0]}
+                {user?.name.split(' ')[1][0]}
+              </Avatar>
             </IconButton>
           </Tooltip>
           <Menu
@@ -104,9 +126,9 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
+            {settings.map(({ title, onClick }) => (
+              <MenuItem key={title} onClick={onClick}>
+                <Typography textAlign="center">{title}</Typography>
               </MenuItem>
             ))}
           </Menu>
