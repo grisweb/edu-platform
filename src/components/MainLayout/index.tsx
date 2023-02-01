@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { ThemeProvider } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { useAppSelector } from 'store/hooks';
 import { useGetUserQuery } from 'store/services/authApi';
@@ -17,20 +17,19 @@ const MainLayout: FC = () => {
     skip: !msToken
   });
 
-  const navigate = useNavigate();
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
 
-  useEffect(() => {
-    if (!user && !isLoading) {
-      navigate('/login');
-    }
-  }, [isLoading, navigate, user]);
+  if (!user && !isLoading) {
+    return <Navigate to="/login" />;
+  }
 
-  return isLoading ? (
-    <FullScreenLoader />
-  ) : (
+  return (
     <ThemeProvider theme={theme}>
       <Dashboard />
     </ThemeProvider>
   );
 };
+
 export default MainLayout;

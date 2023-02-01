@@ -1,40 +1,20 @@
-import { FC } from 'react';
+import { Home } from '@mui/icons-material';
+import { AppRoute } from 'interfaces/routes';
+import { HomePage } from 'pages';
 
-import { Home, School, People } from '@mui/icons-material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-import { SvgIconTypeMap } from '@mui/material';
+import userPages from 'features/users/constants/routes';
+import coursePages from 'features/courses/constants/routes';
 
-import { HomePage, TeachersPage, StudentsPage } from 'pages';
-
-interface Route {
-  name: string;
-  path: string;
-  page: FC;
-  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
-  roles?: string[];
-}
-
-const ROUTES: Route[] = [
+const ROUTES: AppRoute[] = [
   {
-    name: 'Главная',
+    title: 'Главная',
     path: '/',
     page: HomePage,
+    isMenu: true,
     icon: Home
   },
-  {
-    name: 'Преподаватели',
-    path: '/teachers',
-    page: TeachersPage,
-    icon: School,
-    roles: ['admin']
-  },
-  {
-    name: 'Студенты',
-    path: '/students',
-    page: StudentsPage,
-    icon: People,
-    roles: ['admin', 'teacher']
-  }
+  ...userPages,
+  ...coursePages
 ];
 
 export default ROUTES;

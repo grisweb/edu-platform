@@ -19,6 +19,7 @@ import {
 import { useAppSelector } from 'store/hooks';
 
 import ROUTES from 'constants/routes';
+import { roles as userRoles } from 'constants/user';
 
 import { AppBar, Drawer, DrawerHeader } from './components';
 
@@ -43,7 +44,14 @@ const Dashboard: FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#E7EBF0', height: '100vh' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        backgroundColor: '#E7EBF0',
+        height: '100%',
+        minHeight: '100vh'
+      }}
+    >
       <CssBaseline />
       <AppBar open={open} onOpen={handleDrawerOpen} />
       <Drawer variant="permanent" open={open}>
@@ -55,14 +63,12 @@ const Dashboard: FC = () => {
         <Divider />
         <List>
           {ROUTES.map(
-            ({
-              name,
-              path,
-              icon: Icon,
-              roles = ['admin', 'teacher', 'student']
-            }) =>
-              roles?.includes(user?.role ? user.role : '') && (
-                <ListItem key={name} disablePadding sx={{ display: 'block' }}>
+            ({ title, path, isMenu = false, icon: Icon, roles = userRoles }) =>
+              isMenu &&
+              Icon &&
+              user &&
+              roles?.includes(user.role) && (
+                <ListItem key={title} disablePadding sx={{ display: 'block' }}>
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -81,7 +87,7 @@ const Dashboard: FC = () => {
                       <Icon />
                     </ListItemIcon>
                     <ListItemText
-                      primary={name}
+                      primary={title}
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>

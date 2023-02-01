@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import { ruRU } from '@mui/material/locale';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -14,10 +15,6 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = createTheme({
-  options: {
-    drawerWidth: 240
-  }
-});
+const theme = createTheme({ options: { drawerWidth: 240 } }, ruRU);
 
 export default theme;

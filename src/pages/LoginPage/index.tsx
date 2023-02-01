@@ -1,11 +1,5 @@
-import {
-  ChangeEventHandler,
-  FC,
-  FormEventHandler,
-  useState,
-  useEffect
-} from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { ChangeEventHandler, FC, FormEventHandler, useState } from 'react';
+import { useLocation, Navigate } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
 import { useMsal } from '@azure/msal-react';
 
@@ -16,8 +10,6 @@ import FullScreenLoader from 'components/FullScreenLoader';
 
 const LoginPage: FC = () => {
   const { instance } = useMsal();
-
-  const navigate = useNavigate();
   const location = useLocation();
 
   const from = ((location.state as any)?.from.pathname as string) || '/';
@@ -29,12 +21,6 @@ const LoginPage: FC = () => {
     skip: !msToken || !!user
   });
 
-  useEffect(() => {
-    if (user) {
-      navigate(from);
-    }
-  }, [from, navigate, user]);
-
   const [email, setEmail] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
@@ -45,16 +31,22 @@ const LoginPage: FC = () => {
     try {
       await instance.loginRedirect({
         loginHint: email,
-        scopes: ['mail.send']
+        scopes: ['mail.send', 'user.read', 'User.ReadBasic.All']
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  return isLoading ? (
-    <FullScreenLoader />
-  ) : (
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+
+  if (user) {
+    return <Navigate to={from} />;
+  }
+
+  return (
     <form onSubmit={handleSubmit}>
       <TextField value={email} onChange={handleChange} />
       <Button type="submit">Войти с учетной записью ЮФУ</Button>

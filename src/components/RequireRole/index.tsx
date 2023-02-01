@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-import { useAppSelector } from 'store/hooks';
+import { useGetUserQuery } from 'store/services/authApi';
 
 interface RequireRoleProps {
   roles?: string[];
@@ -9,7 +9,7 @@ interface RequireRoleProps {
 const RequireRole: FC<RequireRoleProps> = ({
   roles = ['student', 'teacher', 'admin']
 }) => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { data: user } = useGetUserQuery(null);
 
   return roles.includes(user?.role ? user.role : '') ? (
     <Outlet />

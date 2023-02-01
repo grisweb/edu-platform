@@ -1,12 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import { useMsal } from '@azure/msal-react';
+import { Typography } from '@mui/material';
 
 import { LoginPage } from 'pages';
 import MainLayout from 'components/MainLayout';
 import FullScreenLoader from 'components/FullScreenLoader';
 
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setToken } from 'store/slices/authSlice';
 
 import ROUTES from 'constants/routes';
@@ -14,16 +15,15 @@ import RequireRole from './components/RequireRole';
 
 const App: FC = () => {
   const { instance, accounts } = useMsal();
-  const authenticated = useIsAuthenticated();
 
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (authenticated) {
+    if (accounts.length > 0) {
       const accessTokenRequest = {
-        scopes: ['user.read'],
+        scopes: ['user.read', 'User.ReadBasic.All'],
         account: accounts[0]
       };
 
@@ -38,18 +38,30 @@ const App: FC = () => {
     } else {
       setIsLoading(false);
     }
-  }, [accounts, authenticated, dispatch, instance]);
+  }, [accounts, dispatch, instance]);
 
-  return isLoading ? (
-    <FullScreenLoader />
-  ) : (
+  const serverConnected = useAppSelector((state) => state.auth.serverConnected);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+
+  if (!serverConnected) {
+    return <Typography>No connection to server</Typography>;
+  }
+
+  return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<MainLayout />}>
           {ROUTES.map(({ page: Page, roles, path }) => (
-            <Route element={<RequireRole roles={roles} />}>
-              <Route key={path} path={path} element={<Page />} />
+            <Route
+              path={path}
+              key={path}
+              element={<RequireRole roles={roles} />}
+            >
+              <Route path="" element={<Page />} />
             </Route>
           ))}
         </Route>

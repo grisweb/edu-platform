@@ -1,18 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider as ReduxProvider } from 'react-redux';
 
+import { Provider as ReduxProvider } from 'react-redux';
 import { MsalProvider } from '@azure/msal-react';
 import { Configuration, PublicClientApplication } from '@azure/msal-browser';
 
-import { store } from './store/store';
+import { SnackbarProvider } from 'notistack';
 
+import { store } from './store/store';
 import App from './App';
 
 const configuration: Configuration = {
   auth: {
     clientId: process.env.REACT_APP_AZURE_CLIENT_ID || '',
     authority: process.env.REACT_APP_AZURE_AUTHORITY || ''
+  },
+  cache: {
+    cacheLocation: 'localStorage'
   }
 };
 
@@ -24,10 +28,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <MsalProvider instance={pca}>
-      <ReduxProvider store={store}>
-        <App />
-      </ReduxProvider>
-    </MsalProvider>
+    <SnackbarProvider maxSnack={3}>
+      <MsalProvider instance={pca}>
+        <ReduxProvider store={store}>
+          <App />
+        </ReduxProvider>
+      </MsalProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 );

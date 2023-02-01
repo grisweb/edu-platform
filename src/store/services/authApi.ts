@@ -8,7 +8,6 @@ const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: '/users/me'
       }),
-      transformResponse: (result: User) => result,
       onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;

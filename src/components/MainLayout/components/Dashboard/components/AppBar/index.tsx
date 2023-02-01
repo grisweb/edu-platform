@@ -59,8 +59,8 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
   const logout = useLogout();
 
   const settings = [
-    { title: 'Profile', onClick: handleCloseUserMenu },
-    { title: 'Logout', onClick: () => logout() }
+    { title: 'Профиль', onClick: handleCloseUserMenu },
+    { title: 'Выйти', onClick: () => logout() }
   ];
 
   const { user } = useAppSelector((state) => state.auth);
@@ -70,7 +70,7 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
       <Toolbar>
         <IconButton
           color="inherit"
-          aria-label="open drawer"
+          aria-label="Раскрыть меню"
           onClick={onOpen}
           edge="start"
           sx={{
@@ -94,12 +94,12 @@ const AppBar: FC<AppBarProps> = ({ open, onOpen }) => {
             <br />
             {user?.email}
           </Typography>
-          <Tooltip title="Open settings">
+          <Tooltip title="Открыть настройки">
             <IconButton
               onClick={handleOpenUserMenu}
               color="inherit"
               size="large"
-              aria-label="account of current user"
+              aria-label="Аккаунт текущего пользователя"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               // sx={{ p: 0 }}
