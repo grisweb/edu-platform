@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useMsal } from '@azure/msal-react';
 import { Typography } from '@mui/material';
+import { RedirectRequest, SilentRequest } from '@azure/msal-browser';
 
 import { LoginPage } from 'pages';
 import MainLayout from 'components/MainLayout';
@@ -22,9 +23,15 @@ const App: FC = () => {
 
   useEffect(() => {
     if (accounts.length > 0) {
-      const accessTokenRequest = {
-        scopes: ['user.read', 'User.ReadBasic.All'],
+      const accessTokenRequest: SilentRequest = {
+        scopes: ['mail.send', 'user.read', 'User.ReadBasic.All'],
         account: accounts[0]
+      };
+
+      const redirectRequest: RedirectRequest = {
+        scopes: ['mail.send', 'user.read', 'User.ReadBasic.All'],
+        account: accounts[0],
+        redirectUri: '/login'
       };
 
       instance
@@ -34,7 +41,9 @@ const App: FC = () => {
           dispatch(setToken(accessToken));
           setIsLoading(false);
         })
-        .catch();
+        .catch(async () => {
+          await instance.acquireTokenRedirect(redirectRequest);
+        });
     } else {
       setIsLoading(false);
     }
