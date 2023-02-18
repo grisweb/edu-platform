@@ -22,6 +22,6 @@ interface WithMenuLinkRoute extends Route {
   icon: OverridableComponent<SvgIconTypeMap>;
 }
 
-type AppRoute = WithMenuLinkRoute | BaseRoute;
+type ToplevelRoute = WithMenuLinkRoute | BaseRoute;
 
-export type { AppRoute };
+export type { Route, ToplevelRoute };

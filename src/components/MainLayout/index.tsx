@@ -13,7 +13,7 @@ import Dashboard from './components/Dashboard';
 const MainLayout: FC = () => {
   const { msToken } = useAppSelector((state) => state.auth);
 
-  const { data: user, isLoading } = useGetUserQuery(null, {
+  const { data: user, isFetching: isLoading } = useGetUserQuery(null, {
     skip: !msToken
   });
 

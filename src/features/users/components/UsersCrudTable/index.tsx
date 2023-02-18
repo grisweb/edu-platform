@@ -12,7 +12,7 @@ import type { PaginationState } from '@tanstack/react-table';
 import { MRT_Localization_RU } from 'material-react-table/locales/ru';
 
 import AddUserModal from 'features/users/components/AddUserModal';
-import DeleteUserAlert from 'features/users/components/DeleteUserAlert';
+import ConfirmActionDialog from 'components/ConfirmActionDialog';
 
 import {
   useGetUsersQuery,
@@ -154,11 +154,12 @@ const UsersCrudTable: FC<UsersCrudTableProps> = ({ userRole }) => {
         }}
       />
       <AddUserModal open={open} role={userRole} handleClose={handleClose} />
-      <DeleteUserAlert
+      <ConfirmActionDialog
         isLoading={deleteIsLoading}
         open={!!deletedUser}
         handleClose={handleCloseDeleteAlert}
         handleAgreement={handleDeleteUser}
+        question="Вы действительно хотите удалить данного пользователя?"
       />
     </>
   );

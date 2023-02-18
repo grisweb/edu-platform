@@ -96,10 +96,15 @@ const Dashboard: FC = () => {
           )}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column' }}
+      >
         <>
           <DrawerHeader />
-          <Outlet />
+          <Box flexGrow={1}>
+            <Outlet />
+          </Box>
         </>
       </Box>
     </Box>

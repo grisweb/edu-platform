@@ -14,11 +14,10 @@ const LoginPage: FC = () => {
 
   const from = ((location.state as any)?.from.pathname as string) || '/';
 
-  const { user } = useAppSelector((state) => state.auth);
   const { msToken } = useAppSelector((state) => state.auth);
 
-  const { isLoading } = useGetUserQuery(null, {
-    skip: !msToken || !!user
+  const { isLoading, data: user } = useGetUserQuery(null, {
+    skip: !msToken
   });
 
   const [email, setEmail] = useState('');

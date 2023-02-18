@@ -1,16 +1,27 @@
-import { AppRoute } from 'interfaces/routes';
+import { ToplevelRoute } from 'interfaces/routes';
 import { LocalLibrary } from '@mui/icons-material';
 
-import { CoursesPage } from '../pages';
+import { CoursesPage, AddCoursePage, CoursePage } from '../pages';
 
-const routes: AppRoute[] = [
+const routes: ToplevelRoute[] = [
   {
     title: 'Курсы',
     path: '/courses',
     page: CoursesPage,
-    roles: ['teacher', 'student'],
+    // roles: ['teacher', 'student'],
     icon: LocalLibrary,
     isMenu: true
+  },
+  {
+    title: 'Добавить курс',
+    path: 'courses/add',
+    page: AddCoursePage,
+    roles: ['admin', 'teacher']
+  },
+  {
+    title: 'Курс',
+    path: 'courses/:id',
+    page: CoursePage
   }
 ];
 

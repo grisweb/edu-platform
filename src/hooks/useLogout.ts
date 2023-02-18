@@ -3,14 +3,14 @@ import { useAppDispatch } from 'store/hooks';
 import { logout } from 'store/slices/authSlice';
 
 const useLogout = () => {
-  const { instance, accounts } = useMsal();
+  const { instance } = useMsal();
 
   const dispatch = useAppDispatch();
 
   return async () => {
     try {
       await instance.logoutRedirect({
-        account: accounts[0],
+        account: instance.getActiveAccount(),
         onRedirectNavigate: () => false
       });
 

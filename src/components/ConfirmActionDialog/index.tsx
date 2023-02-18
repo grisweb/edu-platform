@@ -9,26 +9,26 @@ import {
   Button
 } from '@mui/material';
 
-interface DeleteUserAlertProps {
+interface ConfirmActionDialogProps {
   isLoading: boolean;
   open: boolean;
   handleClose: () => void;
   handleAgreement: () => void;
+  question: string;
 }
 
-const DeleteUserAlert: FC<DeleteUserAlertProps> = ({
+const ConfirmActionDialog: FC<ConfirmActionDialogProps> = ({
   isLoading,
   open,
   handleClose,
-  handleAgreement
+  handleAgreement,
+  question
 }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle id="alert-dialog-title">Подтвердите действие</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Вы действительно хотите удалить данного пользователя?
-        </DialogContentText>
+        <DialogContentText>{question}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>
@@ -42,4 +42,4 @@ const DeleteUserAlert: FC<DeleteUserAlertProps> = ({
   );
 };
 
-export default DeleteUserAlert;
+export default ConfirmActionDialog;

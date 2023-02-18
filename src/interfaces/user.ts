@@ -1,5 +1,5 @@
 import { roles } from 'constants/user';
-import { Pagination } from './base';
+import { WithPaginationRequest, WithPaginationResponse } from './base';
 
 interface User {
   id: number;
@@ -19,16 +19,13 @@ interface AuthState {
   token: string | null;
 }
 
-interface UsersRequest {
-  page: number;
-  perPage: number;
+interface UsersRequest extends WithPaginationRequest {
   search: string;
   role: User['role'];
 }
 
-interface UsersResponse {
+interface UsersResponse extends WithPaginationResponse {
   users: User[];
-  pagination: Pagination;
 }
 
 export type { User, AuthState, MsUser, UsersRequest, UsersResponse };

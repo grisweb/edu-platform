@@ -1,11 +1,11 @@
 import { Home } from '@mui/icons-material';
-import { AppRoute } from 'interfaces/routes';
+import { ToplevelRoute } from 'interfaces/routes';
 import { HomePage } from 'pages';
 
 import userPages from 'features/users/constants/routes';
 import coursePages from 'features/courses/constants/routes';
 
-const ROUTES: AppRoute[] = [
+const ROUTES: ToplevelRoute[] = [
   {
     title: 'Главная',
     path: '/',
@@ -13,8 +13,8 @@ const ROUTES: AppRoute[] = [
     isMenu: true,
     icon: Home
   },
-  ...userPages,
-  ...coursePages
+  ...coursePages,
+  ...userPages
 ];
 
 export default ROUTES;

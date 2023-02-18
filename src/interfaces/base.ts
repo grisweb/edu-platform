@@ -12,4 +12,18 @@ interface Pagination {
   totalPages: number;
 }
 
-export type { Response, Pagination };
+interface WithPaginationRequest {
+  page: number;
+  perPage: number;
+}
+
+interface WithPaginationResponse {
+  pagination: Pagination;
+}
+
+export type {
+  Response,
+  Pagination,
+  WithPaginationRequest,
+  WithPaginationResponse
+};

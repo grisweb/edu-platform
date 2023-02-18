@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 import { Provider as ReduxProvider } from 'react-redux';
 import { MsalProvider } from '@azure/msal-react';
@@ -12,8 +13,11 @@ import App from './App';
 
 const configuration: Configuration = {
   auth: {
-    clientId: process.env.REACT_APP_AZURE_CLIENT_ID || '',
-    authority: process.env.REACT_APP_AZURE_AUTHORITY || ''
+    clientId: process.env.REACT_APP_AZURE_CLIENT_ID as string,
+    authority: process.env.REACT_APP_AZURE_AUTHORITY as string,
+    knownAuthorities: [process.env.REACT_APP_AZURE_AUTHORITY as string],
+    redirectUri: '/',
+    postLogoutRedirectUri: '/login'
   },
   cache: {
     cacheLocation: 'localStorage'
@@ -21,6 +25,10 @@ const configuration: Configuration = {
 };
 
 const pca = new PublicClientApplication(configuration);
+
+if (!pca.getActiveAccount() && pca.getAllAccounts().length > 0) {
+  pca.setActiveAccount(pca.getAllAccounts()[0]);
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,7 +39,9 @@ root.render(
     <SnackbarProvider maxSnack={3}>
       <MsalProvider instance={pca}>
         <ReduxProvider store={store}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </ReduxProvider>
       </MsalProvider>
     </SnackbarProvider>

@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { Box, CircularProgress, Container } from '@mui/material';
+import { Box, CircularProgress, Paper } from '@mui/material';
 
-const FullScreenLoader: FC = () => {
+const PageScreenLoader: FC = () => {
   return (
-    <Container sx={{ height: '95vh' }}>
+    <Paper elevation={1} sx={{ height: '100%' }}>
       <Box
         display="flex"
         alignItems="center"
@@ -12,8 +12,8 @@ const FullScreenLoader: FC = () => {
       >
         <CircularProgress />
       </Box>
-    </Container>
+    </Paper>
   );
 };
 
-export default FullScreenLoader;
+export default PageScreenLoader;

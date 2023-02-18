@@ -57,7 +57,7 @@ const query: BaseQueryFn<
 const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: query,
-  tagTypes: ['Users'],
+  tagTypes: ['Users', 'Courses'],
   endpoints: () => ({})
 });
 

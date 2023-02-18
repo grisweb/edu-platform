@@ -1,9 +1,9 @@
-import { AppRoute } from 'interfaces/routes';
+import { ToplevelRoute } from 'interfaces/routes';
 import { People, School } from '@mui/icons-material';
 
 import { TeachersPage, StudentsPage } from '../pages';
 
-const routes: AppRoute[] = [
+const routes: ToplevelRoute[] = [
   {
     title: 'Преподаватели',
     path: '/teachers',
