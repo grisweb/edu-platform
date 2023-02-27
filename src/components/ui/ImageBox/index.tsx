@@ -1,10 +1,11 @@
 import { forwardRef, PropsWithChildren } from 'react';
-import { Box, BoxProps } from '@mui/material';
+import { Box, BoxProps, SxProps } from '@mui/material';
 
 interface ImageBoxProps {
   isDragAccept: boolean;
   isDragReject: boolean;
   isFocused: boolean;
+  sx?: SxProps;
 }
 
 const ImageBox = forwardRef<
@@ -17,6 +18,7 @@ const ImageBox = forwardRef<
       isDragAccept,
       isDragReject,
       isFocused,
+      sx,
       ...propsWithoutChildren
     },
     ref
@@ -57,7 +59,9 @@ const ImageBox = forwardRef<
           backgroundColor: '#fafafa',
           color: '#bdbdbd',
           outline: 'none',
-          transition: 'border .24s ease-in-out'
+          cursor: 'pointer',
+          transition: 'border .24s ease-in-out',
+          ...sx
         }}
       >
         {children}

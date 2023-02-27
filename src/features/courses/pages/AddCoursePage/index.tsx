@@ -1,10 +1,9 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Paper } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
-import PageTitle from 'components/PageTitle';
-import { Form, TextField, ImageField } from 'components/form';
+import { PageTitle, Paper } from 'components/ui';
+import { Form, TextField, ImageField, SubmitButton } from 'components/form';
 import { useAddCourseMutation } from 'store/services/courseApi';
 
 import { Course } from 'interfaces/courses';
@@ -31,15 +30,13 @@ const AddCoursePage: FC = () => {
   };
 
   return (
-    <Paper sx={{ padding: '15px' }} elevation={1}>
+    <Paper>
       <PageTitle title="Создать курс" sx={{ marginBottom: '30px' }} />
       <Form onSubmit={handleSubmit}>
         <TextField name="name" label="Название" required />
         <TextField name="description" label="Описание" multiline />
-        <ImageField />
-        <Button type="submit" variant="contained" disabled={isLoading}>
-          Создать
-        </Button>
+        <ImageField name="image" label="Изображение курса" />
+        <SubmitButton text="Создать" disabled={isLoading} />
       </Form>
     </Paper>
   );

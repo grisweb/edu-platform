@@ -39,7 +39,7 @@ const CourseActions: FC<CourseActionsProps> = ({ id }) => {
       handleClose();
       navigate('/courses');
     } catch {
-      enqueueSnackbar('Ошибка удаления пользователя!', {
+      enqueueSnackbar('Ошибка удаления курса!', {
         variant: 'error'
       });
     }
@@ -70,7 +70,7 @@ const CourseActions: FC<CourseActionsProps> = ({ id }) => {
         isLoading={isLoading}
         handleAgreement={handleDelete}
         handleClose={handleClose}
-        question="Вы действительно хотите удалить данный курс"
+        question="Вы действительно хотите удалить данный курс?"
       />
     </>
   );

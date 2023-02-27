@@ -33,7 +33,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
         height="450px"
         loading="lazy"
         alt={course.name}
-        image={placeholder}
+        image={course.image?.url || placeholder}
       />
       <CardContent
         sx={{

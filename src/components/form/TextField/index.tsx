@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { FC, useEffect } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import {
   Box,
@@ -26,30 +26,36 @@ const TextField: FC<TextFieldProps> = ({
 }) => {
   const { control } = useFormContext();
 
+  const { fieldState, field } = useController({
+    name,
+    control,
+    rules: {
+      required: required ? 'Это значение является обязательным' : undefined
+    },
+    defaultValue: null
+  });
+
+  useEffect(() => {
+    if (field.value === '') {
+      field.onChange(null);
+    }
+  }, [field]);
+
   return (
-    <Controller
-      name={name}
-      defaultValue=""
-      rules={{
-        required: required ? 'Это значение является обязательным' : undefined
-      }}
-      control={control}
-      render={({ field, fieldState }) => (
-        <Box width="100%">
-          <MuiTextField
-            fullWidth
-            rows={2}
-            multiline={multiline}
-            required={required}
-            error={!!fieldState.error}
-            label={label}
-            {...muiTextFieldProps}
-            {...field}
-          />
-          <ErrorMessage error={fieldState.error} />
-        </Box>
-      )}
-    />
+    <Box width="100%">
+      <MuiTextField
+        fullWidth
+        rows={2}
+        multiline={multiline}
+        required={required}
+        error={!!fieldState.error}
+        label={label}
+        {...muiTextFieldProps}
+        {...field}
+        value={field.value || ''}
+      />
+      <ErrorMessage error={fieldState.error} />
+    </Box>
   );
 };
 

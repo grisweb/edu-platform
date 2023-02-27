@@ -21,9 +21,22 @@ interface WithPaginationResponse {
   pagination: Pagination;
 }
 
+interface Image {
+  id: string;
+  url: string;
+}
+
+interface File {
+  id: string;
+  url?: string;
+  name: string;
+}
+
 export type {
   Response,
   Pagination,
   WithPaginationRequest,
-  WithPaginationResponse
+  WithPaginationResponse,
+  Image,
+  File
 };

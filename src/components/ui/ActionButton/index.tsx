@@ -4,7 +4,9 @@ import {
   Button,
   ButtonProps,
   ButtonPropsVariantOverrides,
-  SvgIconTypeMap
+  ColorObject,
+  SvgIconTypeMap,
+  SxProps
 } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
@@ -12,18 +14,21 @@ interface ActionButtonProps {
   text: string;
   icon: OverridableComponent<SvgIconTypeMap>;
   onClick?: MouseEventHandler;
+  color?: ColorObject;
   MuiButtonProps?: ButtonProps | ButtonPropsVariantOverrides;
+  sx?: SxProps;
 }
 
 const ActionButton: FC<ActionButtonProps> = ({
   text,
   onClick,
   icon: Icon,
-  MuiButtonProps
+  MuiButtonProps,
+  sx
 }) => (
   <Button
     onClick={onClick}
-    sx={{ lineHeight: '1.5' }}
+    sx={{ lineHeight: '1.5', ...sx }}
     variant="text"
     {...MuiButtonProps}
   >

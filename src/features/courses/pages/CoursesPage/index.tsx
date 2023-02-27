@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+
 import {
   Box,
   Grid,
-  Paper,
   TextField,
   Pagination,
   PaginationItem
@@ -11,11 +11,9 @@ import {
 import { Add, Search } from '@mui/icons-material';
 
 import { useGetCoursesQuery } from 'store/services/courseApi';
-
+import { ActionButton, PageTitle, Paper } from 'components/ui';
 import changeSearchParams from 'utils/changeSearchParams';
 
-import { ActionButton } from 'components/ui';
-import PageTitle from 'components/PageTitle';
 import CourseCard from '../../components/CourseCard';
 import CourseCardSkeleton from '../../components/CourseCardSkeleton';
 
@@ -38,7 +36,7 @@ const CoursesPage: FC = () => {
   );
 
   return (
-    <Paper sx={{ padding: '15px' }} elevation={1}>
+    <Paper>
       <PageTitle title="Курсы" />
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
         <Box sx={{ flexGrow: 1 }}>
